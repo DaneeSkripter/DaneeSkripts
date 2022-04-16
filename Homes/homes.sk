@@ -1,0 +1,70 @@
+# © 2022 DaneeSkripter under MIT License 
+# https://github.com/DaneeSkripter/DaneeSkripts
+
+# Prefix
+options:
+    prefix: "&7[&6Homes&7]"
+
+# Set home for player
+command /sethome [<text>]:
+    description: "Set your home"
+    trigger:
+        if arg-1 is not set :
+            send "%{@prefix}% &cYou have to set home name." to player
+        else:
+            if {home::%player's uuid%::%arg-1%} is set:
+                send "%{@prefix}% &cThis home name already exist. Try another one!"
+            else:
+                set {home::%player's uuid%::%arg-1%} to location of player
+                set {homenames::%player's uuid%::%arg-1%} to arg-1
+                send "%{@prefix}% Your home &a&l%arg-1%&7 was set!" to player
+
+# Delete players home
+command /delhome [<text>]:
+    trigger:
+        if arg-1 is not set:
+            send "%{@prefix}% &cYou have to define your home name" to player
+        else:
+            if {home::%player's uuid%::%arg-1%} is not set:
+                send "%{@prefix}% &cYou have to define valid home name" to player
+            else:
+                delete {home::%player's uuid%::%arg-1%}
+                delete {homenames::%player's uuid%::%arg-1%}
+                send "%{@prefix}% Your home &a&l%arg-1%&7 was deleted!" to player
+
+#List player's homes
+command /listhomes:
+    trigger:
+        if {homenames::%player's uuid%::*} is not set:
+            send "%{@prefix}% &cYou have no home set!"
+        else:
+            send "%{@prefix}% Your homes: &a&l%{homenames::%player's uuid%::*}%"
+
+# Teleport player to his home
+command /home [<text>]:
+    trigger:
+        if arg-1 is not set:
+            send "%{@prefix}% &cYou have to define home name." to player
+        else:
+            if {home::%player's uuid%::%arg-1%} is not set:
+                send "%{@prefix}% &cYou have to define valid home name." to player
+            else:
+                teleport player to {home::%player's uuid%::%arg-1%}
+                send "%{@prefix}% You've been teleported to &a&l%arg-1%&7 home."
+
+# Help menu
+command /helphomes:
+    trigger:
+        send "&7<-------------------------------------->" to player
+        send " " to player
+        send "                      &6&lHOMES                      " to player
+        send " " to player
+        send "&7Developed by &6&n<link:https://github.com/DaneeSkripter/DaneeSkripts>DaneeSkripter" to player
+        send "&7Version: &6v1.0.0" to player
+        send " " to player
+        send "&6/sethome <home name> &7- Set home for player" to player
+        send "&6/delhome <home name> &7- Delete player's home" to player
+        send "&6/listhomes &7- List player's homes" to player
+        send "&6/home <home name> &7- Teleport player to his home" to player
+        send " " to player
+        send "&7<-------------------------------------->" to player
