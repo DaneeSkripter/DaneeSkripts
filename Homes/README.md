@@ -1,6 +1,6 @@
 # 🏠 Homes
+![Made with Skript](/skript.svg)
 - With this skript player can create homes to which he can teleport.
-
 ## Commands
 - /sethome <home name> - Set home for player
 - /delhome <home name> - Delete player's home
