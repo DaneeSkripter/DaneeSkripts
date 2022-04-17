@@ -1,0 +1,42 @@
+# # © 2022 DaneeSkripter under MIT License 
+# https://github.com/DaneeSkripter/DaneeSkripts
+# Version: 1.0.0
+
+on join:
+ log "[EasyLogging] %player% has joined the server." to "../../../plugins/EasyLogging/joins.log"
+ 
+on quit:
+ log "[EasyLogging] %player% has left the server." to "../../../plugins/EasyLogging/quits.log"
+ 
+on first join:
+ log "[EasyLogging] %player% joined the server for the first time." to "../../../plugins/EasyLogging/first_joins.log"
+ 
+on place:
+ log "[EasyLogging] %player% placed %block%" to "../../../plugins/EasyLogging/block_placed.log"
+ 
+on break:
+ log "[EasyLogging] %player% breaked %block%" to "../../../plugins/EasyLogging/block_breaked.log"
+ 
+on chat:
+ log "[EasyLogging] %player% >> %message%" to "../../../plugins/EasyLogging/chat.log"
+
+on rightclick on chest:
+    log "[EasyLogging] %player% opened chest at %location of player%" to "../../../plugins/EasyLogging/tools.log"
+
+on rightclick on crafting table:
+    log "[EasyLogging] %player% opened crafting table at %location of player%" to "../../../plugins/EasyLogging/tools.log"
+
+on rightclick on furnace:
+    log "[EasyLogging] %player% opened furnace at %location of player%" to "../../../plugins/EasyLogging/tools.log"
+
+on rightclick on anvil:
+    log "[EasyLogging] %player% opened anvil at %location of player%" to "../../../plugins/EasyLogging/tools.log"
+
+on death:
+    log "[EasyLogging] %player% died at %location of player%" to "../../../plugins/EasyLogging/deaths.log"
+
+on respawn:
+    log "[EasyLogging] %player% respawned at %location of player%" to "../../../plugins/EasyLogging/respawns.log"
+
+on command:
+    log "[EasyLogging] %player% executed %command%" to "../../../plugins/EasyLogging/commands.log"
