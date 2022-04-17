@@ -8,7 +8,7 @@
 - /listhomes - Shows player's homes
 - /home <home name> - Teleport player to his home
 
-## [Download Here!](https://www.spigotmc.org/resources/homes-skript.101413/)
+## [Download Here!](https://www.spigotmc.org/resources/homes.101413/)
  
 ## Images
 ![](https://clickimg.xyz/img/S9aZFX8.png)
