@@ -4,6 +4,14 @@
 # Prefix
 options:
     prefix: "&7[&6Homes&7]"
+    version: "1.0.0"
+
+on load:
+    set {_latestversion} to text from "https://daneeskripter.xyz/version-check/homes.txt"
+    if {_latestversion} is not {@version}:
+        send "%{@prefix}% &cOutdated version. &6Please update from https://www.spigotmc.org/resources/homes.101413/" to console
+    else:
+        send "%{@prefix}% &aYou are using newest version of Homes."
 
 # Set home for player
 command /sethome [<text>]:
@@ -60,7 +68,7 @@ command /helphomes:
         send "                      &6&lHOMES                      " to player
         send " " to player
         send "&7Developed by &6&n<link:https://github.com/DaneeSkripter/DaneeSkripts>DaneeSkripter" to player
-        send "&7Version: &6v1.0.0" to player
+        send "&7Version: &6v%{version}%" to player
         send " " to player
         send "&6/sethome <home name> &7- Set home for player" to player
         send "&6/delhome <home name> &7- Delete player's home" to player
