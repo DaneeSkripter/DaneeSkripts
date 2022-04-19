@@ -1,6 +1,11 @@
 # 🏠 Homes
 ![Made with Skript](/skript.svg)
 - With this skript player can create homes to which he can teleport.
+
+## Requirements
+- [Skript](https://github.com/SkriptLang/Skript/releases)
+- [skQuery](https://github.com/SkQuery/SkQuery/releases)
+
 ## Commands
 - /helphomes - Help Menu
 - /sethome <home name> - Set home for player
