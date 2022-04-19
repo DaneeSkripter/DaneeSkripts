@@ -1,6 +1,18 @@
 # # © 2022 DaneeSkripter under MIT License 
 # https://github.com/DaneeSkripter/DaneeSkripts
-# Version: 1.0.0
+# Version: 1.0.1
+
+options:
+    version: "1.0.0"
+    prefix: "&7[&eEasyLogging&7]"
+
+on load:
+    set {_latestversion} to text from "https://daneeskripter.xyz/version-check/easylogging.txt"
+    if {_latestversion} is not {@version}:
+        send "%{@prefix}% &cOutdated version. &6Please update from https://www.spigotmc.org/resources/easylogging.101438/" to console
+    else:
+        send "%{@prefix}% &aYou are using newest version of EasyLogging."
+
 
 on join:
  log "[EasyLogging] %player% has joined the server." to "../../../plugins/EasyLogging/joins.log"
