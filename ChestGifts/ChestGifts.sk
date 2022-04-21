@@ -1,0 +1,51 @@
+options:
+    prefix: "&7[&6Chest&eGifts&7]"
+    version: "1.0.0"
+
+command /givecrate [<text>]:
+    permission: cg.give
+    permission message: "&7[&6Chest&eGifts&7] &cYou don't have permission to use this command. &7(&6cg.give&7)"
+    trigger:
+        if arg-1 is not set:
+            send "%{@prefix}% &cYou have to choose a crate. &7(&6Basic,Medium,Rare,Legendary&7)" to player
+        else if arg-1 is "Basic":
+            give 1 of chest named "&a&lBasic Crate" to player
+            send "%{@prefix}% &7You've got a &a&lBasic Crate&7!" to player
+
+command /crateloc [<text>]:
+    permission: cg.setloc
+    permission message: "&7[&6Chest&eGifts&7] &cYou don't have permission to use this command. &7(&6cg.setloc&7)"
+    trigger:
+        if arg-1 is not set:
+            send "%{@prefix}% &cYou have to choose a crate. &7(&6Basic,Medium,Rare,Legendary&7)" to player
+        else if arg-1 is "Basic":
+            set {loc.basic} to location of block below player
+            add 1 to pitch of {loc.basic}
+            send {loc.basic} to player
+
+command /additem [<text>] [<text>]:
+    permission: cg.additem
+    permission message: "&7[&6Chest&eGifts&7] &cYou don't have permission to use this command. &7(&6cg.additem&7)"
+    trigger:
+        if arg-1 is not set:
+            send "%{@prefix}% &cYou have to choose a crate. &7(&6Basic,Medium,Rare,Legendary&7)" to player
+        else if arg-2 is not set:
+            send "%{@prefix}% &cYou have to choose a item (prize)." to player
+        else if arg-1 is "Basic":
+            add arg-2 to {items::basic::*}
+            send "%{@prefix}% &7You succesfully added &a%arg-2% to &a%arg-1% crate." to player
+
+
+on rightclick on chest:
+    send "work" to players
+    set {eventloc} to event-block's location
+    add 1 to pitch of {eventloc}
+    send "event: %{eventloc}%" to players
+    send "var: %{loc.basic}%"
+    if {eventloc} is {loc.basic}:
+        if {items::basic::*} is not set:
+            send "&6&lPrizes: &cNone" to player
+            cancel event
+        else:
+            send "&6&lPrizes: &6%{items::basic::*}%" to player
+            cancel event
