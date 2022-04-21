@@ -32,20 +32,34 @@ command /additem [<text>] [<text>]:
         else if arg-2 is not set:
             send "%{@prefix}% &cYou have to choose a item (prize)." to player
         else if arg-1 is "Basic":
-            add arg-2 to {items::basic::*}
-            send "%{@prefix}% &7You succesfully added &a%arg-2% to &a%arg-1% crate." to player
+            if {items::basic::%arg-2%} is set:
+                send "%{@prefix}% &cThis item is already in prizes of Basic Crate." to player
+            else:
+                set {items::basic::%arg-2%} to arg-2
+                send "%{@prefix}% &7You succesfully added &a%arg-2% &7to &a%arg-1% crate." to player
 
+command /delitem [<text>] [<text>]:
+    permission: cg.delitem
+    permission message: "&7[&6Chest&eGifts&7] &cYou don't have permission to use this command. &7(&6cg.delitem&7)"
+    trigger:
+        if arg-1 is not set:
+            send "%{@prefix}% &cYou have to choose a crate. &7(&6Basic,Medium,Rare,Legendary&7)" to player
+        else if arg-2 is not set:
+            send "%{@prefix}% &cYou have to choose a item to delete (prize)." to player
+        else if arg-1 is "Basic":
+            if {items::basic::%arg-2%} is not set:
+                send "%{@prefix}% &cThis item isn't in Basic Crate." to player
+            else:
+                delete {items::basic::%arg-2%}
+                send "%{@prefix}% &7Item &a%arg-2% &7has been deleted." to player
 
 on rightclick on chest:
-    send "work" to players
     set {eventloc} to event-block's location
     add 1 to pitch of {eventloc}
-    send "event: %{eventloc}%" to players
-    send "var: %{loc.basic}%"
     if {eventloc} is {loc.basic}:
         if {items::basic::*} is not set:
-            send "&6&lPrizes: &cNone" to player
+            send "%{@prefix}% &6&lPrizes: &cNone" to player
             cancel event
         else:
-            send "&6&lPrizes: &6%{items::basic::*}%" to player
+            send "%{@prefix}% &6&lPrizes: &6%{items::basic::*}%" to player
             cancel event
