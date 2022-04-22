@@ -11,6 +11,9 @@ command /givecrate [<text>]:
         else if arg-1 is "Basic":
             give 1 of chest named "&a&lBasic Crate" to player
             send "%{@prefix}% &7You've got a &a&lBasic Crate&7!" to player
+        else if arg-1 is "Medium":
+            give 1 of chest named "&5&lMedium Crate" to player
+            send "%{@prefix}% &7You've got a &5&lMedium Crate&7!" to player
 
 command /crateloc [<text>]:
     permission: cg.setloc
@@ -22,37 +25,50 @@ command /crateloc [<text>]:
             set {loc.basic} to location of block below player
             add 1 to pitch of {loc.basic}
             set yaw of {loc.basic} to 1
-            send {loc.basic} to player
+            send "%{@prefix}% &7You successfully set location for &a&lBasic Crate" to player
+        else if arg-1 is "Medium":
+            set {loc.medium} to location of block below player
+            add 1 to pitch of {loc.medium}
+            set yaw of {loc.medium} to 1
+            send "%{@prefix}% &7You successfully set location for &5&lMedium Crate" to player
 
-command /additem [<text>] [<text>]:
+command /additem [<text>]:
     permission: cg.additem
     permission message: "&7[&6Chest&eGifts&7] &cYou don't have permission to use this command. &7(&6cg.additem&7)"
     trigger:
         if arg-1 is not set:
             send "%{@prefix}% &cYou have to choose a crate. &7(&6Basic,Medium,Rare,Legendary&7)" to player
-        else if arg-2 is not set:
-            send "%{@prefix}% &cYou have to choose a item (prize)." to player
         else if arg-1 is "Basic":
-            if {items::basic::%arg-2%} is set:
+            if {items::basic::%player's tool%} is set:
                 send "%{@prefix}% &cThis item is already in prizes of Basic Crate." to player
             else:
-                set {items::basic::%arg-2%} to arg-2
-                send "%{@prefix}% &7You succesfully added &a%arg-2% &7to &a%arg-1% crate." to player
+                set {items::basic::%player's tool%} to player's tool
+                send "%{@prefix}% &7You succesfully added &a%player's tool% &7to &a%arg-1% crate." to player
+        else if arg-1 is "Medium":
+            if {items::medium::%player's tool%} is set:
+                send "%{@prefix}% &cThis item is already in prizes of Medium Crate." to player
+            else:
+                set {items::medium::%player's tool%} to player's tool
+                send "%{@prefix}% &7You succesfully added &a%player's tool% &7to &5%arg-1% crate." to player
 
-command /delitem [<text>] [<text>]:
+command /delitem [<text>]:
     permission: cg.delitem
     permission message: "&7[&6Chest&eGifts&7] &cYou don't have permission to use this command. &7(&6cg.delitem&7)"
     trigger:
         if arg-1 is not set:
             send "%{@prefix}% &cYou have to choose a crate. &7(&6Basic,Medium,Rare,Legendary&7)" to player
-        else if arg-2 is not set:
-            send "%{@prefix}% &cYou have to choose a item to delete (prize)." to player
         else if arg-1 is "Basic":
-            if {items::basic::%arg-2%} is not set:
+            if {items::basic::%player's tool%} is not set:
                 send "%{@prefix}% &cThis item isn't in Basic Crate." to player
             else:
-                delete {items::basic::%arg-2%}
-                send "%{@prefix}% &7Item &a%arg-2% &7has been deleted." to player
+                delete {items::basic::%player's tool%}
+                send "%{@prefix}% &7Item &a%player's tool% &7has been deleted." to player
+        else if arg-1 is "Medium":
+            if {items::medium::%player's tool%} is not set:
+                send "%{@prefix}% &cThis item isn't in Medium Crate." to player
+            else:
+                delete {items::medium::%player's tool%}
+                send "%{@prefix}% &7Item &a%player's tool% &7has been deleted." to player
 
 
 command /delcrate [<text>]:
@@ -64,13 +80,29 @@ command /delcrate [<text>]:
         else if arg-1 is "Basic":
             set block at {loc.basic} to air
             send "%{@prefix}% &a&lBasic Crate &7has been deleted." to player
+        else if arg-1 is "Medium":
+            set block at {loc.medium} to air
+            send "%{@prefix}% &5&lMedium Crate &7has been deleted." to player
+
+
+command /givekey [<text>]:
+    permission: cg.givekey
+    permission message: "&7[&6Chest&eGifts&7] &cYou don't have permission to use this command. &7(&6cg.givekey&7)"
+    trigger:
+        if arg-1 is not set:
+            send "%{@prefix}% &cYou have to choose a crate key. &7(&6Basic,Medium,Rare,Legendary&7)" to player
+        else if arg-1 is "Basic":
+            give 1 of tripwire hook of unbreaking 10 named "&a&lBasic Crate Key" to player
+            send "%{@prefix}% &7You've got a &a&lBasic Crate Key&7!" to player
+        else if arg-1 is "Medium":
+            give 1 of tripwire hook of unbreaking 10 named "&5&lMedium Crate Key" to player
+            send "%{@prefix}% &7You've got a &5&lMedium Crate Key&7!" to player
 
 
 on leftclick on chest:
     set {eventloc} to event-block's location
     set yaw of {eventloc} to 1
     add 1 to pitch of {eventloc}
-    send {eventloc}
     if {eventloc} is {loc.basic}:
         if {items::basic::*} is not set:
             send "%{@prefix}% &6&lPrizes: &cNone" to player
@@ -78,18 +110,43 @@ on leftclick on chest:
         else:
             send "%{@prefix}% &6&lPrizes: &6%{items::basic::*}%" to player
             cancel event
+    else if {eventloc} is {loc.medium}:
+        if {items::medium::*} is not set:
+            send "%{@prefix}% &6&lPrizes: &cNone" to player
+            cancel event
+        else:
+            send "%{@prefix}% &6&lPrizes: &6%{items::medium::*}%" to player
+            cancel event
 
 on rightclick on chest:
     set {eventloc2} to event-block's location
     set yaw of {eventloc2} to 1
     add 1 to pitch of {eventloc2}
-    send {eventloc2}
     if {eventloc2} is {loc.basic}:
-        if player's tool is tripwire hook:
+        if player's tool is tripwire hook of unbreaking 10 named "&a&lBasic Crate Key":
             if {items::basic::*} is not set:
                 send "%{@prefix}% &cPrizes are not set. Please contact server administrator." to player
+                cancel event
             else:
-                send "%random element out of {items::basic::*}%"
+                set {randomitem.basic} to random element out of {items::basic::*}
+                give 1 of {randomitem.basic} to player
+                remove 1 of player's tool from player
+                send "%{@prefix}% &7You won a &a%{randomitem.basic}%"
+                cancel event
         else:
             send "%{@prefix}% &cYou need &a&lBasic Crate Key" to player
+            cancel event
+    else if {eventloc2} is {loc.medium}:
+        if player's tool is tripwire hook of unbreaking 10 named "&5&lMedium Crate Key":
+            if {items::medium::*} is not set:
+                send "%{@prefix}% &cPrizes are not set. Please contact server administrator." to player
+                cancel event
+            else:
+                set {randomitem.medium} to random element out of {items::medium::*}
+                give 1 of {randomitem.medium} to player
+                remove 1 of player's tool from player
+                send "%{@prefix}% &7You won a &a%{randomitem.medium}%"
+                cancel event
+        else:
+            send "%{@prefix}% &cYou need &5&lMedium Crate Key" to player
             cancel event
