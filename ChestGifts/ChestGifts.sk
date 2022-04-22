@@ -21,6 +21,7 @@ command /crateloc [<text>]:
         else if arg-1 is "Basic":
             set {loc.basic} to location of block below player
             add 1 to pitch of {loc.basic}
+            set yaw of {loc.basic} to 1
             send {loc.basic} to player
 
 command /additem [<text>] [<text>]:
@@ -53,13 +54,42 @@ command /delitem [<text>] [<text>]:
                 delete {items::basic::%arg-2%}
                 send "%{@prefix}% &7Item &a%arg-2% &7has been deleted." to player
 
-on rightclick on chest:
+
+command /delcrate [<text>]:
+    permission: cg.delcrate
+    permission message: "&7[&6Chest&eGifts&7] &cYou don't have permission to use this command. &7(&6cg.delcrate&7)"
+    trigger:
+        if arg-1 is not set:
+            send "%{@prefix}% &cYou have to choose a crate to delete. &7(&6Basic,Medium,Rare,Legendary&7)" to player
+        else if arg-1 is "Basic":
+            set block at {loc.basic} to air
+            send "%{@prefix}% &a&lBasic Crate &7has been deleted." to player
+
+
+on leftclick on chest:
     set {eventloc} to event-block's location
+    set yaw of {eventloc} to 1
     add 1 to pitch of {eventloc}
+    send {eventloc}
     if {eventloc} is {loc.basic}:
         if {items::basic::*} is not set:
             send "%{@prefix}% &6&lPrizes: &cNone" to player
             cancel event
         else:
             send "%{@prefix}% &6&lPrizes: &6%{items::basic::*}%" to player
+            cancel event
+
+on rightclick on chest:
+    set {eventloc2} to event-block's location
+    set yaw of {eventloc2} to 1
+    add 1 to pitch of {eventloc2}
+    send {eventloc2}
+    if {eventloc2} is {loc.basic}:
+        if player's tool is tripwire hook:
+            if {items::basic::*} is not set:
+                send "%{@prefix}% &cPrizes are not set. Please contact server administrator." to player
+            else:
+                send "%random element out of {items::basic::*}%"
+        else:
+            send "%{@prefix}% &cYou need &a&lBasic Crate Key" to player
             cancel event
