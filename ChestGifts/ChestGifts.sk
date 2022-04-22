@@ -2,6 +2,13 @@ options:
     prefix: "&7[&6Chest&eGifts&7]"
     version: "1.0.0"
 
+on load:
+    set {_latestversion} to text from "https://daneeskripter.xyz/version-check/chestgifts.txt"
+    if {_latestversion} is not {@version}:
+        send "%{@prefix}% &cOutdated version. &6Please update from https://e-click.tk/v3bhwZ" to console
+    else:
+        send "%{@prefix}% &aYou are using newest version of ChestGifts."
+
 command /givecrate [<text>]:
     permission: cg.give
     permission message: "&7[&6Chest&eGifts&7] &cYou don't have permission to use this command. &7(&6cg.give&7)"
@@ -14,6 +21,14 @@ command /givecrate [<text>]:
         else if arg-1 is "Medium":
             give 1 of chest named "&5&lMedium Crate" to player
             send "%{@prefix}% &7You've got a &5&lMedium Crate&7!" to player
+        else if arg-1 is "Rare":
+            give 1 of chest named "&6&lRare Crate" to player
+            send "%{@prefix}% &7You've got a &6&lRare Crate&7!" to player
+        else if arg-1 is "Legendary":
+            give 1 of chest named "&b&lLegendary Crate" to player
+            send "%{@prefix}% &7You've got a &b&lLegendary Crate&7!" to player
+        else:
+            send "%{@prefix}% &cThis crate does not exist!" to player
 
 command /crateloc [<text>]:
     permission: cg.setloc
@@ -31,6 +46,18 @@ command /crateloc [<text>]:
             add 1 to pitch of {loc.medium}
             set yaw of {loc.medium} to 1
             send "%{@prefix}% &7You successfully set location for &5&lMedium Crate" to player
+        else if arg-1 is "Rare":
+            set {loc.rare} to location of block below player
+            add 1 to pitch of {loc.rare}
+            set yaw of {loc.rare} to 1
+            send "%{@prefix}% &7You successfully set location for &6&lRare Crate" to player
+        else if arg-1 is "Legendary":
+            set {loc.Legendary} to location of block below player
+            add 1 to pitch of {loc.legendary}
+            set yaw of {loc.legendary} to 1
+            send "%{@prefix}% &7You successfully set location for &b&lLegendary Crate" to player
+        else:
+            send "%{@prefix}% &cThis crate does not exist!" to player
 
 command /additem [<text>]:
     permission: cg.additem
@@ -50,6 +77,20 @@ command /additem [<text>]:
             else:
                 set {items::medium::%player's tool%} to player's tool
                 send "%{@prefix}% &7You succesfully added &a%player's tool% &7to &5%arg-1% crate." to player
+        else if arg-1 is "Rare":
+            if {items::rare::%player's tool%} is set:
+                send "%{@prefix}% &cThis item is already in prizes of Rare Crate." to player
+            else:
+                set {items::rare::%player's tool%} to player's tool
+                send "%{@prefix}% &7You succesfully added &a%player's tool% &7to &6%arg-1% crate." to player
+        else if arg-1 is "Legendary":
+            if {items::legendary::%player's tool%} is set:
+                send "%{@prefix}% &cThis item is already in prizes of Legendary Crate." to player
+            else:
+                set {items::legendary::%player's tool%} to player's tool
+                send "%{@prefix}% &7You succesfully added &a%player's tool% &7to &b%arg-1% crate." to player
+        else:
+            send "%{@prefix}% &cThis crate does not exist!" to player
 
 command /delitem [<text>]:
     permission: cg.delitem
@@ -69,6 +110,20 @@ command /delitem [<text>]:
             else:
                 delete {items::medium::%player's tool%}
                 send "%{@prefix}% &7Item &a%player's tool% &7has been deleted." to player
+        else if arg-1 is "Rare":
+            if {items::rare::%player's tool%} is not set:
+                send "%{@prefix}% &cThis item isn't in Rare Crate." to player
+            else:
+                delete {items::rare::%player's tool%}
+                send "%{@prefix}% &7Item &a%player's tool% &7has been deleted." to player
+        else if arg-1 is "Legendary":
+            if {items::legendary::%player's tool%} is not set:
+                send "%{@prefix}% &cThis item isn't in Legendary Crate." to player
+            else:
+                delete {items::legendary::%player's tool%}
+                send "%{@prefix}% &7Item &a%player's tool% &7has been deleted." to player
+        else:
+            send "%{@prefix}% &cThis crate does not exist!" to player
 
 
 command /delcrate [<text>]:
@@ -83,6 +138,14 @@ command /delcrate [<text>]:
         else if arg-1 is "Medium":
             set block at {loc.medium} to air
             send "%{@prefix}% &5&lMedium Crate &7has been deleted." to player
+        else if arg-1 is "Rare":
+            set block at {loc.rare} to air
+            send "%{@prefix}% &6&lRare Crate &7has been deleted." to player
+        else if arg-1 is "Legendary":
+            set block at {loc.legendary} to air
+            send "%{@prefix}% &b&lLegendary Crate &7has been deleted." to player
+        else:
+            send "%{@prefix}% &cThis crate does not exist!" to player
 
 
 command /givekey [<text>]:
@@ -97,7 +160,32 @@ command /givekey [<text>]:
         else if arg-1 is "Medium":
             give 1 of tripwire hook of unbreaking 10 named "&5&lMedium Crate Key" to player
             send "%{@prefix}% &7You've got a &5&lMedium Crate Key&7!" to player
+        else if arg-1 is "Rare":
+            give 1 of tripwire hook of unbreaking 10 named "&6&lRare Crate Key" to player
+            send "%{@prefix}% &7You've got a &6&lRare Crate Key&7!" to player
+        else if arg-1 is "Legendary":
+            give 1 of tripwire hook of unbreaking 10 named "&b&lLegendary Crate Key" to player
+            send "%{@prefix}% &7You've got a &b&lLegendary Crate Key&7!" to player
+        else:
+            send "%{@prefix}% &cThis crate does not exist!" to player
 
+command /helpcg:
+    trigger:
+        send "&7<-------------------------------------->" to player
+        send " " to player
+        send "                  &6Chest&eGifts                  " to player
+        send " " to player
+        send "&7Developed by &6&n<link:https://github.com/DaneeSkripter/DaneeSkripts>DaneeSkripter" to player
+        send "&7Version: &6v%{@version}%" to player
+        send " " to player
+        send "&6/givecrate <crate> &7- Give player a crate" to player
+        send "&6/crateloc <crate> &7- Set crate location" to player
+        send "&6/delcrate <crate> &7- Delete a crate" to player
+        send "&6/additem <crate> &7- Add item (prize) to crate" to player
+        send "&6/delitem <crate> &7- Delete item (prize) from crate" to player
+        send "&6/givekey <crate> &7- Give key from crate" to player
+        send " " to player
+        send "&7<-------------------------------------->" to player
 
 on leftclick on chest:
     set {eventloc} to event-block's location
@@ -116,6 +204,20 @@ on leftclick on chest:
             cancel event
         else:
             send "%{@prefix}% &6&lPrizes: &6%{items::medium::*}%" to player
+            cancel event
+    else if {eventloc} is {loc.rare}:
+        if {items::rare::*} is not set:
+            send "%{@prefix}% &6&lPrizes: &cNone" to player
+            cancel event
+        else:
+            send "%{@prefix}% &6&lPrizes: &6%{items::rare::*}%" to player
+            cancel event
+    else if {eventloc} is {loc.legendary}:
+        if {items::legendary::*} is not set:
+            send "%{@prefix}% &6&lPrizes: &cNone" to player
+            cancel event
+        else:
+            send "%{@prefix}% &6&lPrizes: &6%{items::legendary::*}%" to player
             cancel event
 
 on rightclick on chest:
@@ -149,4 +251,32 @@ on rightclick on chest:
                 cancel event
         else:
             send "%{@prefix}% &cYou need &5&lMedium Crate Key" to player
+            cancel event
+    else if {eventloc2} is {loc.rare}:
+        if player's tool is tripwire hook of unbreaking 10 named "&6&lRare Crate Key":
+            if {items::rare::*} is not set:
+                send "%{@prefix}% &cPrizes are not set. Please contact server administrator." to player
+                cancel event
+            else:
+                set {randomitem.rare} to random element out of {items::rare::*}
+                give 1 of {randomitem.rare} to player
+                remove 1 of player's tool from player
+                send "%{@prefix}% &7You won a &a%{randomitem.rare}%"
+                cancel event
+        else:
+            send "%{@prefix}% &cYou need &6&lRare Crate Key" to player
+            cancel event
+    else if {eventloc2} is {loc.legendary}:
+        if player's tool is tripwire hook of unbreaking 10 named "&b&lLegendary Crate Key":
+            if {items::legendary::*} is not set:
+                send "%{@prefix}% &cPrizes are not set. Please contact server administrator." to player
+                cancel event
+            else:
+                set {randomitem.legendary} to random element out of {items::legendary::*}
+                give 1 of {randomitem.legendary} to player
+                remove 1 of player's tool from player
+                send "%{@prefix}% &7You won a &a%{randomitem.legendary}%"
+                cancel event
+        else:
+            send "%{@prefix}% &cYou need &b&lLegendary Crate Key" to player
             cancel event
