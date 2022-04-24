@@ -1,6 +1,9 @@
 # 🎉 ChestGifts
 ![](/skript.svg)
-- Randomly give a player some stuff from crate
+- Player can win some stuff from crate
+
+## [Download Here!](https://www.spigotmc.org/resources/chestgifts.101563/)
+
 ## Commands
 - /helpcg - List all commands
 - /givecrate <crate> - Give player a crate
@@ -9,8 +12,6 @@
 - /additem <crate> - Add item (prize) to crate
 - /delitem <crate> - Delete item (prize) from crate
 - /givekey <crate> - Give key from crate
-  
-## [Download Here!](https://www.spigotmc.org/resources/chestgifts.101563/)
 
 ## Permissions
 - /givecrate <crate> -  cg.give
@@ -23,3 +24,5 @@
 ## Images
 ![](https://clickimg.xyz/img/GogjiA7.png)
 ![](https://clickimg.xyz/img/G4gpvc3.png)
+![](https://clickimg.xyz/img/uv2f0uo.png)
+![](https://clickimg.xyz/img/bbufwqK.png)
